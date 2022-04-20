@@ -1,14 +1,14 @@
 package racingcar;
 
-import camp.nextstep.edu.missionutils.test.NsTest;
-import org.junit.jupiter.api.Test;
-
 import static camp.nextstep.edu.missionutils.test.Assertions.assertRandomNumberInRangeTest;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import camp.nextstep.edu.missionutils.test.NsTest;
+import org.junit.jupiter.api.Test;
+
 class ApplicationTest extends NsTest {
-    private static final int MOVING_FORWARD = 4;
+    /*private static final int MOVING_FORWARD = 4;
     private static final int STOP = 3;
 
     private static final String ERROR_MESSAGE = "[ERROR]";
@@ -32,10 +32,10 @@ class ApplicationTest extends NsTest {
                 assertThat(output()).contains(ERROR_MESSAGE);
             }
         );
-    }
+    }*/
 
     @Override
     public void runMain() {
-        Application.main(new String[]{});
+//        Application.main(new String[]{});
     }
 }
