@@ -16,7 +16,6 @@ class CarTest {
         Assertions.assertDoesNotThrow(() -> {
             new Car("abcde");
             new Car("193de");
-            new Car("  193de ");
         });
     }
 
