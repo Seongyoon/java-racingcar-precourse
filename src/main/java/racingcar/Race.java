@@ -1,5 +1,6 @@
 package racingcar;
 
+import java.util.List;
 import racingcar.util.ErrorMessageUtil;
 import racingcar.util.ValidationUtil;
 
@@ -16,8 +17,8 @@ public class Race {
         cars.race(lap);
     }
 
-    public int getRegisteredCarCount() {
-        return cars.size();
+    public List<Car> getWinner() {
+        return cars.getTopRankers();
     }
 
     private void init() {
@@ -25,7 +26,7 @@ public class Race {
         lap = 0;
     }
 
-    void carRegistration(String carNames) {
+    void setCarList(String carNames) {
         cars = new CarList(carNames);
     }
 

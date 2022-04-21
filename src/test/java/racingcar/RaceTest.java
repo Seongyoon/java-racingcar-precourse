@@ -17,24 +17,23 @@ class RaceTest {
     @Test
     void 자동차_등록성공() {
         Race race = new Race();
-        Assertions.assertDoesNotThrow(() -> race.carRegistration("app, bob, curry"));
-        Assertions.assertDoesNotThrow(() -> race.carRegistration("app,bob,curry"));
+        Assertions.assertDoesNotThrow(() -> race.setCarList("app, bob, curry"));
+        Assertions.assertDoesNotThrow(() -> race.setCarList("app,bob,curry"));
     }
 
     @Test
     void 자동차_등록실패() {
         Race race = new Race();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> race.carRegistration("appapp, bob, curry"));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> race.carRegistration("app,bob,,curry"));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> race.carRegistration("app,bob,cu ry"));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> race.carRegistration(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> race.setCarList("appapp, bob, curry"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> race.setCarList("app,bob,,curry"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> race.setCarList("app,bob,cu ry"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> race.setCarList(null));
     }
 
     @Test
-    void 자동차_정상등록_확인() {
+    void 자동차_정상등록() {
         Race race = new Race();
-        race.carRegistration("app, bob, curry");
-        Assertions.assertEquals(race.getRegisteredCarCount(), ("app, bob, curry".split(",")).length);
+        Assertions.assertDoesNotThrow(() -> race.setCarList("app, bob, curry"));
     }
 
     @Test
@@ -58,10 +57,10 @@ class RaceTest {
                 .thenReturn(0, 0, 9, 0, 0, 9, 0, 0, 9);
 
         Race race = new Race();
-        race.carRegistration("apple, hoho, curry");
+        race.setCarList("apple, hoho, curry");
         race.setLap(LAP_COUNT_STRING);
 
-        Assertions.assertDoesNotThrow(() -> race.race());
+        Assertions.assertDoesNotThrow(race::race);
 
         mock.close();
     }
@@ -73,10 +72,10 @@ class RaceTest {
                 .thenReturn(0, 9, 9, 0, 9, 9, 9, 9, 9);
 
         Race race = new Race();
-        race.carRegistration("apple, hoho, curry");
+        race.setCarList("apple, hoho, curry");
         race.setLap(LAP_COUNT_STRING);
 
-        Assertions.assertDoesNotThrow(() -> race.race());
+        Assertions.assertDoesNotThrow(race::race);
 
         mock.close();
     }
@@ -86,7 +85,7 @@ class RaceTest {
         Race race = new Race();
         race.setLap(LAP_COUNT_STRING);
 
-        Assertions.assertThrows(IllegalStateException.class, () -> race.race());
+        Assertions.assertThrows(IllegalStateException.class, race::race);
     }
 
     @Test
@@ -94,6 +93,39 @@ class RaceTest {
         Race race = new Race();
         race.setLap(LAP_COUNT_STRING);
 
-        Assertions.assertThrows(IllegalStateException.class, () -> race.race());
+        Assertions.assertThrows(IllegalStateException.class, race::race);
+    }
+
+    @Test
+    void 레이스결과_단일우승자() {
+        mock = mockStatic(Randoms.class);
+        mock.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
+                .thenReturn(0, 0, 9, 0, 0, 9, 0, 0, 9);
+
+        Race race = new Race();
+        race.setCarList("apple, hoho, curry");
+        race.setLap(LAP_COUNT_STRING);
+        race.race();
+
+        Assertions.assertEquals("curry", race.getWinner().get(0).getName());
+
+        mock.close();
+    }
+
+    @Test
+    void 레이스결과_공동우승자() {
+        mock = mockStatic(Randoms.class);
+        mock.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
+                .thenReturn(0, 9, 9, 0, 9, 9, 0, 9, 9);
+
+        Race race = new Race();
+        race.setCarList("apple, hoho, curry");
+        race.setLap(LAP_COUNT_STRING);
+        race.race();
+
+        Assertions.assertEquals("hoho", race.getWinner().get(0).getName());
+        Assertions.assertEquals("curry", race.getWinner().get(1).getName());
+
+        mock.close();
     }
 }

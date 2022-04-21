@@ -46,6 +46,27 @@ public class CarList {
         return cars.isEmpty();
     }
 
+    public List<Car> getTopRankers() {
+        List<Car> topRankers = new ArrayList<>();
+
+        for (Car car : cars) {
+            compareAndAppend(topRankers, car);
+        }
+
+        return topRankers;
+    }
+
+    private void compareAndAppend(List<Car> topRankers, Car car) {
+        if (topRankers.isEmpty() || topRankers.get(0).getDistance() == car.getDistance()) {
+            topRankers.add(car);
+        }
+
+        if (topRankers.get(0).getDistance() < car.getDistance()) {
+            topRankers.clear();
+            topRankers.add(car);
+        }
+    }
+
     private void validateCars(String carNames) {
         ValidationUtil.validateNull(carNames);
     }
