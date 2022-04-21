@@ -52,4 +52,9 @@ public class Car {
         ValidationUtil.validateRestrictString(name, SPACE_CHARACTER);
         ValidationUtil.validateLength(name, NAME_LENGTH_MIN, NAME_LENGTH_MAX);
     }
+
+    public void goForwardAndPrint() {
+        goForward();
+        System.out.println(getCurrentResult());
+    }
 }

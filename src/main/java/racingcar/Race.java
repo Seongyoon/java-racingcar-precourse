@@ -1,41 +1,44 @@
 package racingcar;
 
-import java.util.ArrayList;
-import java.util.List;
+import racingcar.util.ErrorMessageUtil;
 import racingcar.util.ValidationUtil;
 
 public class Race {
-    private static final String NAME_DELIMITER = ",";
-    private List<Car> list;
-    private int raceCount;
+    private CarList cars;
+    private int lap;
 
     public Race() {
         init();
     }
 
+    public void race() {
+        checkRaceCondition();
+        cars.race(lap);
+    }
+
     public int getRegisteredCarCount() {
-        return this.list.size();
+        return cars.size();
     }
 
     private void init() {
-        list = new ArrayList<>();
-        raceCount = 0;
+        cars = new CarList();
+        lap = 0;
     }
 
-    void carRegistration(String cars) {
-        validateCars(cars);
-        for(String carName : cars.split(NAME_DELIMITER)) {
-            list.add(new Car(carName.trim()));
+    void carRegistration(String carNames) {
+        cars = new CarList(carNames);
+    }
+
+    void setLap(String lap) {
+        ValidationUtil.validateInteger(lap);
+        ValidationUtil.validatePositive(lap);
+        this.lap = Integer.parseInt(lap);
+    }
+
+    private void checkRaceCondition() {
+        if (cars.isEmpty() || lap < 1) {
+            throw new IllegalStateException(ErrorMessageUtil.getMessage(
+                    String.format("경주를 할 수 있는 상태가 아닙니다. carSize: %d, lap: %d", cars.size(), lap)));
         }
-    }
-
-    void setRaceCount(String raceCount) {
-        ValidationUtil.validateInteger(raceCount);
-        ValidationUtil.validatePositive(raceCount);
-        this.raceCount = Integer.parseInt(raceCount);
-    }
-
-    private void validateCars(String cars) {
-        ValidationUtil.validateNull(cars);
     }
 }
