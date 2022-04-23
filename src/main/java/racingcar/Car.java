@@ -34,7 +34,7 @@ public class Car {
     }
 
     public String getCurrentResult() {
-        return String.format("%s: %s", name, getDistanceCharacter());
+        return String.format("%s : %s", name, getDistanceCharacter());
     }
 
     private String getDistanceCharacter() {
