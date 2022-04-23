@@ -2,12 +2,12 @@ package racingcar;
 
 import java.util.List;
 import racingcar.util.ErrorMessageUtil;
-import racingcar.util.ValidationUtil;
 
 public class Race {
+    public static final String MESSAGE_FORMAT_INVALID_RACE_STATUS = "경주를 할 수 있는 상태가 아닙니다. carSize: %d, lap: %d";
     private RaceStatus raceStatus;
     private CarList cars;
-    private int lap;
+    private Lap lap;
 
     public Race() {
         init();
@@ -18,16 +18,14 @@ public class Race {
         changeRaceStatus();
     }
 
-    public void setLap(String lap) {
-        ValidationUtil.validateInteger(lap);
-        ValidationUtil.validatePositive(lap);
-        this.lap = Integer.parseInt(lap);
+    public void setLap(String inputLap) {
+        lap.setLap(inputLap);
         changeRaceStatus();
     }
 
     public void race() {
         checkRaceCondition();
-        cars.race(lap);
+        cars.race(lap.getLapCount());
         raceStatus = RaceStatus.RACE_END;
     }
 
@@ -46,21 +44,21 @@ public class Race {
     private void init() {
         raceStatus = RaceStatus.INIT;
         cars = new CarList();
-        lap = 0;
+        lap = new Lap();
     }
 
     private void changeRaceStatus() {
-        if (!cars.isEmpty() && lap > 0) {
+        if (cars.isNotEmpty() && lap.isNotEmpty()) {
             raceStatus = RaceStatus.RACE_READY;
             return;
         }
 
-        if (!cars.isEmpty()) {
+        if (cars.isNotEmpty()) {
             raceStatus = RaceStatus.CAR_READY;
             return;
         }
 
-        if (lap > 0) {
+        if (lap.isNotEmpty()) {
             raceStatus = RaceStatus.LAP_READY;
         }
     }
@@ -68,7 +66,7 @@ public class Race {
     private void checkRaceCondition() {
         if (!raceStatus.isRaceReady()) {
             throw new IllegalStateException(ErrorMessageUtil.getMessage(
-                    String.format("경주를 할 수 있는 상태가 아닙니다. carSize: %d, lap: %d", cars.size(), lap)));
+                    String.format(MESSAGE_FORMAT_INVALID_RACE_STATUS, cars.size(), lap.getLapCount())));
         }
     }
 }

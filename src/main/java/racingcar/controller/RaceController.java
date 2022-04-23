@@ -7,6 +7,10 @@ import racingcar.Car;
 import racingcar.Race;
 
 public class RaceController {
+    private static final String MESSAGE_RACE_RESULT = "실행결과";
+    private static final String MESSAGE_INPUT_CAR_NAMES = "경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)";
+    private static final String MESSAGE_INPUT_LAP_COUNT = "시도할 회수는 몇회인가요?";
+    private static final String MESSAGE_FINAL_WINNER = "최종 우승자: ";
     private final Race race;
 
     public RaceController() {
@@ -22,7 +26,7 @@ public class RaceController {
             initLaps();
         } while (!race.isRaceReady());
 
-        System.out.println("실행 결과");
+        System.out.println(MESSAGE_RACE_RESULT);
         race.race();
 
         printResult(race.getWinner());
@@ -30,7 +34,7 @@ public class RaceController {
 
     private void initCars() {
         try {
-            System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
+            System.out.println(MESSAGE_INPUT_CAR_NAMES);
             race.setCarList(Console.readLine());
         } catch (IllegalArgumentException iae) {
             System.out.println(iae.getMessage());
@@ -39,7 +43,7 @@ public class RaceController {
 
     private void initLaps() {
         try {
-            System.out.println("시도할 회수는 몇회인가요?");
+            System.out.println(MESSAGE_INPUT_LAP_COUNT);
             race.setLap(Console.readLine());
         } catch (IllegalArgumentException iae) {
             System.out.println(iae.getMessage());
@@ -52,6 +56,6 @@ public class RaceController {
             winnerNames.add(car.getName());
         }
 
-        System.out.print("최종 우승자: " + String.join(",", winnerNames));
+        System.out.print(MESSAGE_FINAL_WINNER + String.join(",", winnerNames));
     }
 }

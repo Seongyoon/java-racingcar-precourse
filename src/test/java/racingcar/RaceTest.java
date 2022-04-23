@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 class RaceTest {
-    private final static String MAX_INTEGER_STRING = String.valueOf(Integer.MIN_VALUE);
-    private final static String LAP_COUNT_STRING = "3";
+    private static final String MAX_INTEGER_STRING = String.valueOf(Integer.MIN_VALUE);
+    private static final String LAP_COUNT_STRING = "3";
 
     private MockedStatic<Randoms> mock;
 

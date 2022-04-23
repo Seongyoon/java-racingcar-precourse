@@ -6,6 +6,7 @@ import racingcar.util.ValidationUtil;
 
 public class CarList {
     private static final String NAME_DELIMITER = ",";
+    private static final int FIRST_INDEX_NUMBER = 0;
 
     private List<Car> cars;
 
@@ -42,8 +43,8 @@ public class CarList {
         System.out.println();
     }
 
-    public boolean isEmpty() {
-        return cars.isEmpty();
+    public boolean isNotEmpty() {
+        return !cars.isEmpty();
     }
 
     public List<Car> getTopRankers() {
@@ -57,11 +58,11 @@ public class CarList {
     }
 
     private void compareAndAppend(List<Car> topRankers, Car car) {
-        if (topRankers.isEmpty() || topRankers.get(0).getDistance() == car.getDistance()) {
+        if (topRankers.isEmpty() || topRankers.get(FIRST_INDEX_NUMBER).getDistance() == car.getDistance()) {
             topRankers.add(car);
         }
 
-        if (topRankers.get(0).getDistance() < car.getDistance()) {
+        if (topRankers.get(FIRST_INDEX_NUMBER).getDistance() < car.getDistance()) {
             topRankers.clear();
             topRankers.add(car);
         }
